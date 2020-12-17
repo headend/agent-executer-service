@@ -1,0 +1,53 @@
+syntax = "proto3";
+/**
+ * Agent executer related messages.
+ */
+
+
+package proto;
+option go_package = "github.com/headend/agent-executer-service/proto";
+
+/**
+ * Represents the params to identify agent.
+ */
+message AgentEXERequest {
+    /**
+    * IP of agent
+    */
+    string agent_ip = 1 [json_name = "agent_ip"];
+    int64 profile_ip = 2 [json_name = "profile_ip"];
+    int64 control_id = 3 [json_name = "control_id"];
+    int64 control_type = 4 [json_name = "control_type"];
+    repeated string tunnel_data = 5 [json_name = "tunnel_data"];
+}
+
+message AgentEXEesponse {
+    /**
+    * Status
+    */
+    bool AgentEXEResponseStatus = 1 [json_name = "status"];
+    /**
+    * Slice of agent object
+    */
+    repeated AgentEXERequest agentexes = 2 [json_name = "data"];
+}
+
+enum AgentEXEResponseStatus {
+    FAIL = 0; /// Success
+    SUCCESS = 1; /// Failed
+}
+
+service AgentEXEService {
+    /**
+    * Used to run urgent task
+    */
+    rpc RunUrgentTask (AgentEXERequest) returns (AgentEXEResponse){
+    }
+
+    /**
+    * Used to run command shell on linux
+    */
+    rpc RunShell (AgentEXERequest) returns (AgentEXEResponse) {
+    }
+}
+
