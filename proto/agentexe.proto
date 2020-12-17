@@ -21,7 +21,7 @@ message AgentEXERequest {
     repeated string tunnel_data = 5 [json_name = "tunnel_data"];
 }
 
-message AgentEXEesponse {
+message AgentEXEResponse {
     /**
     * Status
     */
