@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"github.com/headend/agent-execute-service/execute-services"
+	"github.com/headend/agent-executer-service/execute-services"
 )
 
 
