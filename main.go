@@ -2,12 +2,12 @@ package main
 
 import (
 	"log"
-	"github.com/headend/agent-executer-service/execute-services"
+	"github.com/headend/agent-executer-service/executer-services"
 )
 
 
 func main()  {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("Agent control service")
-	execute_services.StartServer()
+	executer_services.StartServer()
 }
