@@ -34,6 +34,8 @@ github.com/headend/share-module v0.0.0-20201218071449-0b7214da2b4b h1:ZzhZEqAtpX
 github.com/headend/share-module v0.0.0-20201218071449-0b7214da2b4b/go.mod h1:dG5PsEogW+v822OBCrAW4ilBqZ9EFtEZ1IZYqEI7Op4=
 github.com/headend/share-module v0.0.0-20201219064024-aec69e082ab5 h1:GA2H3QdrF4wtdHqdxoVB7/W987DKIXeWxAWvhcSzgUw=
 github.com/headend/share-module v0.0.0-20201219064024-aec69e082ab5/go.mod h1:dG5PsEogW+v822OBCrAW4ilBqZ9EFtEZ1IZYqEI7Op4=
+github.com/headend/share-module v0.0.0-20201219124542-2c277aa73553 h1:reI3UKlCqF+TSbjq3hQqeUoqlAn+EoaLQr8flfiuYLY=
+github.com/headend/share-module v0.0.0-20201219124542-2c277aa73553/go.mod h1:dG5PsEogW+v822OBCrAW4ilBqZ9EFtEZ1IZYqEI7Op4=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

@@ -13,13 +13,10 @@ import "google/protobuf/any.proto";
  * Represents the params to identify agent.
  */
 message AgentEXERequest {
-    /**
-    * IP of agent
-    */
-    string agent_ip = 1 [json_name = "agent_ip"];
-    int64 profile_ip = 2 [json_name = "profile_ip"];
-    int64 control_id = 3 [json_name = "control_id"];
-    int64 control_type = 4 [json_name = "control_type"];
+    int64 agent_id = 1 [json_name = "agent_id"];
+    int64 profile_id = 2 [json_name = "profile_id"];
+    int64 exe_id = 3 [json_name = "exe_id"];
+    int64 exe_type = 4 [json_name = "exe_type"];
     repeated google.protobuf.Any tunnel_data = 5 [json_name = "tunnel_data"];
 }
 
@@ -27,7 +24,7 @@ message AgentEXEResponse {
     /**
     * Status
     */
-    bool AgentEXEResponseStatus = 1 [json_name = "status"];
+    AgentEXEResponseStatus status = 1 [json_name = "status"];
     /**
     * Slice of agent object
     */

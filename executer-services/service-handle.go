@@ -7,7 +7,6 @@ import (
 	file_and_directory "github.com/headend/share-module/file-and-directory"
 	"github.com/headend/share-module/model"
 	"log"
-	"time"
 )
 
 func (c *agentExeServer) RunUrgentTask(ctx context.Context, in *agentexepb.AgentEXERequest) (*agentexepb.AgentEXEResponse, error) {
@@ -41,7 +40,7 @@ func SendExeSignal(in *agentexepb.AgentEXERequest, exeType int) (agentexepb.Agen
 	var AgentExeResponse []*agentexepb.AgentEXERequest
 	AgentExeResponse = append(AgentExeResponse, in)
 	exeResponseData := agentexepb.AgentEXEResponse{
-		AgentEXEResponseStatus: true,
+		Status: agentexepb.AgentEXEResponseStatus_SUCCESS,
 		Agentexes:           AgentExeResponse,
 	}
 	return exeResponseData, nil
@@ -49,12 +48,14 @@ func SendExeSignal(in *agentexepb.AgentEXERequest, exeType int) (agentexepb.Agen
 
 func SendMsgToQueue(in *agentexepb.AgentEXERequest, exeType int) (err error) {
 	messageData := model.AgentEXEQueueRequest{
-		AgentExeRequest: model.AgentExeRequest{
-			AgentIp:        in.AgentIp,
-			ExeId:          int(in.ControlId),
+		AgentExeSingleRequest: model.AgentExeSingleRequest{
+			AgentId:    "",
+			ExeType:    exeType,
+			ExeId:      0,
+			TunnelData: nil,
 		},
-		ExeType:         exeType,
-		EventTime:       time.Now().Unix(),
+		ExeType:               0,
+		EventTime:             0,
 	}
 
 	msgSendToQueue, err := messageData.GetJsonString()
