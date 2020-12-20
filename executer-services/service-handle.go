@@ -3,10 +3,11 @@ package executer_services
 import (
 	"context"
 	agentexepb "github.com/headend/agent-executer-service/proto"
+	queueServer "github.com/headend/share-module/MQ"
 	static_config "github.com/headend/share-module/configuration/static-config"
-	file_and_directory "github.com/headend/share-module/file-and-directory"
 	"github.com/headend/share-module/model"
 	"log"
+	"time"
 )
 
 func (c *agentExeServer) RunUrgentTask(ctx context.Context, in *agentexepb.AgentEXERequest) (*agentexepb.AgentEXEResponse, error) {
@@ -18,7 +19,7 @@ func (c *agentExeServer) RunUrgentTask(ctx context.Context, in *agentexepb.Agent
 	// Check agent exists
 	// Assign signal number
 	// Send signal
-	exeResponseData, err2 := SendExeSignal(in, static_config.UrgentTask)
+	exeResponseData, err2 := SendExeSignal(c, in, static_config.UrgentTask)
 	if err2 != nil {
 		return nil, err2
 	}
@@ -30,8 +31,8 @@ func (c *agentExeServer) RunShell(ctx context.Context, in *agentexepb.AgentEXERe
 }
 
 
-func SendExeSignal(in *agentexepb.AgentEXERequest, exeType int) (agentexepb.AgentEXEResponse, error) {
-	err2 := SendMsgToQueue(in, exeType)
+func SendExeSignal(c *agentExeServer, in *agentexepb.AgentEXERequest, exeType int) (agentexepb.AgentEXEResponse, error) {
+	err2 := SendMsgToQueue(c, in, exeType)
 	if err2 != nil {
 		log.Fatalln(err2)
 		return agentexepb.AgentEXEResponse{}, err2
@@ -46,16 +47,16 @@ func SendExeSignal(in *agentexepb.AgentEXERequest, exeType int) (agentexepb.Agen
 	return exeResponseData, nil
 }
 
-func SendMsgToQueue(in *agentexepb.AgentEXERequest, exeType int) (err error) {
-	messageData := model.AgentEXEQueueRequest{
+func SendMsgToQueue(c *agentExeServer, in *agentexepb.AgentEXERequest, exeType int) (err error) {
+		messageData := model.AgentEXEQueueRequest{
 		AgentExeSingleRequest: model.AgentExeSingleRequest{
-			AgentId:    "",
+			AgentId:    in.AgentId,
 			ExeType:    exeType,
 			ExeId:      0,
 			TunnelData: nil,
 		},
-		ExeType:               0,
-		EventTime:             0,
+		ExeType:               exeType,
+		EventTime:             time.Now().Unix(),
 	}
 
 	msgSendToQueue, err := messageData.GetJsonString()
@@ -63,8 +64,14 @@ func SendMsgToQueue(in *agentexepb.AgentEXERequest, exeType int) (err error) {
 		return err
 	}
 	// Do send to message queue
-	logFile := file_and_directory.MyFile{Path: static_config.LogPath + "/exemsg.log"}
-	logFile.WriteString(msgSendToQueue)
+
+	var msgQueueServer queueServer.MQ
+	defer msgQueueServer.CloseProducer()
+	msgQueueServer.PushMsgByTopic(c.config, msgSendToQueue,c.config.MQ.CommandTopic)
+	if msgQueueServer.Err != nil {
+		log.Println(msgQueueServer.Err.Error())
+		return msgQueueServer.Err
+	}
 	return nil
 }
 
