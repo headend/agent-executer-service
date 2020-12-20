@@ -66,7 +66,7 @@ func SendMsgToQueue(c *agentExeServer, in *agentexepb.AgentEXERequest, exeType i
 	// Do send to message queue
 
 	var msgQueueServer queueServer.MQ
-	defer msgQueueServer.CloseProducer()
+	//defer msgQueueServer.CloseProducer()
 	msgQueueServer.PushMsgByTopic(c.config, msgSendToQueue,c.config.MQ.CommandTopic)
 	if msgQueueServer.Err != nil {
 		log.Println(msgQueueServer.Err.Error())
